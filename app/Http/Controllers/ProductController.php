@@ -14,8 +14,8 @@ class ProductController extends Controller
     public function index()
     {
         // responsible for fetching all products 
-
-        
+        $products = Products::all();
+        return $products;
     }
 
     /**
@@ -36,7 +36,12 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        // storing request within product object
+        $products = new Product();
+        $products->name = $request->name;
+        $products->description = $request->description;
+        $products->price = $request->price;
+        $products->save(); // saves to database (( references .env  ))
     }
 
     /**
@@ -47,7 +52,8 @@ class ProductController extends Controller
      */
     public function show($id)
     {
-        //
+        // find product by id ( or single product )
+        $product = Product::find($id);
     }
 
     /**
@@ -57,7 +63,9 @@ class ProductController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function edit($id, Request $request)
-    // {
+        {
+
+    
     //     $this->validate($request, [
 
     //         'title'=> 'max:140',
