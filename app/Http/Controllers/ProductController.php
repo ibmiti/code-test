@@ -15,7 +15,8 @@ class ProductController extends Controller
     {
         // responsible for fetching all products 
         $products = Products::all();
-        return $products;
+        $response = APIHelpers::createAPIResponse(false, 200, '' , $products);
+        return response()->json($response, 200);
     }
 
     /**
@@ -41,7 +42,14 @@ class ProductController extends Controller
         $products->name = $request->name;
         $products->description = $request->description;
         $products->price = $request->price;
-        $products->save(); // saves to database (( references .env  ))
+        $product_save = $products->save(); // saves to database (( references .env  )) // returns bool
+        if($product_save){
+            $response = APIHelpers::createAPIResponse(false, 201, 'Product added successfully' , null);
+            return response()->json($response, 201);
+        } else {
+            $response = APIHelpers::createAPIResponse(true, 400, 'Product creation failed' , null);
+            return response()->json($response, 400);
+        }
     }
 
     /**
@@ -54,6 +62,8 @@ class ProductController extends Controller
     {
         // find product by id ( or single product )
         $product = Product::find($id);
+        $response = APIHelpers::createAPIResponse(false, 200, '' , $products);
+        return response()->json($response, 200);
     }
 
     /**
@@ -112,7 +122,18 @@ class ProductController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $product = Product::find($id);
+        $product->name = $request->name;
+        $product->desccription = $request->description;
+        $product->price = $request->price;
+        $product_save = $product->save();
+        if ($product_save){
+            $response = APIHelpers::createAPIResponse(false, 200, 'Product successfully updated' , $products);
+        return response()->json($response, 200);
+        } else {
+            $response = APIHelpers::createAPIResponse(true, 400, 'Product update failed' , $products);
+        return response()->json($response, 400);
+        }
     }
 
     /**
@@ -123,6 +144,7 @@ class ProductController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $product = Product::find($id);
+        $product->delete();
     }
 }
