@@ -4,7 +4,7 @@ namespace App\Helpers;
 
 class APIHelpers {
 
-    public static function createAPIResponse($is_error, $http_code, $message, $content ) 
+    public static function createAPIResponse($is_error, $http_code, $message, $content) 
     {
         $result = [];
 

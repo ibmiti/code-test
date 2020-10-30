@@ -43,6 +43,7 @@ class ProductController extends Controller
         $products->description = $request->description;
         $products->price = $request->price;
         $product_save = $products->save(); // saves to database (( references .env  )) // returns bool
+
         if($product_save){
             $response = APIHelpers::createAPIResponse(false, 201, 'Product added successfully' , null);
             return response()->json($response, 201);
@@ -76,41 +77,7 @@ class ProductController extends Controller
         {
 
     
-    //     $this->validate($request, [
 
-    //         'title'=> 'max:140',
-    //         'brand'=> 'max:140',
-    //         'price'=> 'max:10',
-    //         'product_image'=> 'max:140',
-
-    //     ]);
-
-        
-    //     $update = Auth::user()->products()->create([
-    //         'business_id' => auth()->user()->id,
-    //         'title' => $request->title,
-    //         'brand' => $request->brand,
-    //         'price' => $request->price,
-    //         'product_image' => $request->product_image,
-            
-    //     ]);
-
-    //     if($request->hasFile('product_image')){
-
-    //         $business = Auth::user();
-    //         $image   = $request->file('product_image');         
-    //         $filename = time() . '.' . $image->getClientOriginalExtension();            
-    //         $location = public_path('uploads/business/products/'. $filename );          
-    //         Image::make($image)->resize(812, null, function ($constraint){$constraint->aspectRatio();})->save($location);
-            
-    //         $business->product_image = $filename;
-    //         $business->save();  
-        
-
-
-    //     return redirect()
-    //         ->route('products.create')
-    //         ->with('info', 'Your product has been created.');
     }
 
     /**
@@ -126,12 +93,13 @@ class ProductController extends Controller
         $product->name = $request->name;
         $product->desccription = $request->description;
         $product->price = $request->price;
-        $product_save = $product->save();
-        if ($product_save){
-            $response = APIHelpers::createAPIResponse(false, 200, 'Product successfully updated' , $products);
+        $product_update = $product->save(); // returns bool 
+
+        if ($product_update){
+            $response = APIHelpers::createAPIResponse(false, 200, 'Product successfully updated' , null);
         return response()->json($response, 200);
         } else {
-            $response = APIHelpers::createAPIResponse(true, 400, 'Product update failed' , $products);
+            $response = APIHelpers::createAPIResponse(true, 400, 'Product update failed' , null);
         return response()->json($response, 400);
         }
     }
@@ -145,6 +113,14 @@ class ProductController extends Controller
     public function destroy($id)
     {
         $product = Product::find($id);
-        $product->delete();
+        $product_delete = $product->delete();
+
+        if ($product_delete){
+            $response = APIHelpers::createAPIResponse(false, 200, 'Product successfully deleted' , null);
+        return response()->json($response, 200);
+        } else {
+            $response = APIHelpers::createAPIResponse(true, 400, 'Product update failed' , null);
+        return response()->json($response, 400);
+        }
     }
 }
